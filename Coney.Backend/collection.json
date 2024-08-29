@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "20dfc401-2b83-40c9-aaa6-3fc05e52a59a",
+		"name": "Coney",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10141207"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"Doyler\",\r\n  \"lastName\": \"rubio\",\r\n  \"email\": \"doyler@prueba.com\",\r\n  \"password\": \"asdsds\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/User/createUser",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/User/getUsers",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"getUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getUserById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/User/getUserById/1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"getUserById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 2,\r\n  \"email\": \"user@example.com\",\r\n  \"firstName\": \"Prueba\",\r\n  \"lastName\": \"Prueba\",\r\n  \"password\": \"Prueba\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/User/updateUser/2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"updateUser",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/User/deleteUser/4",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"deleteUser",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://localhost:7122",
+			"type": "string"
+		}
+	]
+}
