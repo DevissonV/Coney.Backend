@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:latest
+    environment:
+    # esta info se deja aca porque este archivo es de desarrollo y no estara en produccion
+    # por eso no hay problema en versionarlo
+      POSTGRES_USER: coneyuser 
+      POSTGRES_PASSWORD: coneypassword
+      POSTGRES_DB: coneydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
