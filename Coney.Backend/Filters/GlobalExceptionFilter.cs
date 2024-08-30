@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 
 namespace Coney.Backend.Filters
 {
@@ -39,7 +38,7 @@ namespace Coney.Backend.Filters
                 };
             }
 
-            context.ExceptionHandled = true;  // Evita que la excepción se propague más allá de este punto
+            context.ExceptionHandled = true;  // Prevents the exception from propagating beyond this point
         }
     }
 }
