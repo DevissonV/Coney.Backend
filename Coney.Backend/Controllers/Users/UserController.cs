@@ -19,16 +19,16 @@ public class UserController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
     {
         var users = await _userService.GetAllUsersAsync();
-        return Ok(users);
+        return Ok(new { status = true, code = 200, data = users });
     }
 
     // GET: api/User/getUserById/{id}
-    // Returns a single user by ID.
+    // Retrieves a user by ID.
     [HttpGet("getUserById/{id}")]
-    public async Task<ActionResult<UserDto>> GetUser(int id)
+    public async Task<ActionResult<UserDto>> GetUserByID(int id)
     {
         var user = await _userService.GetUserByIdAsync(id);
-        return Ok(user);
+        return Ok(new { status = true, code = 200, data = user });
     }
 
     // POST: api/User/createUser
@@ -36,8 +36,12 @@ public class UserController : ControllerBase
     [HttpPost("createUser")]
     public async Task<ActionResult<UserDto>> CreateUser(CreateUserDto userDto)
     {
-        await _userService.AddUserAsync(userDto);
-        return CreatedAtAction(nameof(GetUser), new { id = userDto.Email }, userDto);
+        var createdUser = await _userService.AddUserAsync(userDto);
+        return CreatedAtAction(
+            nameof(GetUserByID), 
+            new { id = createdUser.Id }, 
+            new { status = true, code = 201, data = createdUser 
+        });
     }
 
     // PUT: api/User/updateUser/{id}

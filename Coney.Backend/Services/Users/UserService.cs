@@ -14,7 +14,9 @@ namespace Coney.Backend.Services.Users
             _userRepository = userRepository;
             _logger = logger;
         }
+        
 
+        // This method retrieves the information of all users in the database
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             try
@@ -31,11 +33,12 @@ namespace Coney.Backend.Services.Users
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener la lista de usuarios");
-                throw new ApplicationException("Se produjo un error al obtener los usuarios, inténtelo de nuevo más tarde.");
+                _logger.LogError(ex, "Error getting user list");
+                throw new ApplicationException("An error occurred while getting users.");
             }
         }
 
+        // This method retrieves the user from the database using the provided ID.
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
             try
@@ -43,8 +46,9 @@ namespace Coney.Backend.Services.Users
                 var user = await _userRepository.GetByIdAsync(id);
                 if (user == null)
                 {
-                    throw new KeyNotFoundException("Usuario no encontrado.");
+                    throw new KeyNotFoundException("user not found.");
                 }
+                
                 return new UserDto
                 {
                     Id = user.Id,
@@ -54,23 +58,27 @@ namespace Coney.Backend.Services.Users
                     CreatedAt = user.CreatedAt
                 };
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!(ex is KeyNotFoundException))
             {
-                _logger.LogError(ex, $"Error al obtener el usuario con ID {id}");
-                throw new ApplicationException($"Se produjo un error al obtener el usuario con ID {id}, inténtelo de nuevo más tarde.");
+                _logger.LogError(ex, $"Error getting user with ID {id}");
+                throw new ApplicationException($"An error occurred while getting the user with ID {id}.");
             }
         }
 
-        public async Task AddUserAsync(CreateUserDto userDto)
+        
+        // This method is responsible for creating the instance and and registration of the entity 
+        // with all the information necessary to register a user.
+        public async Task<UserDto> AddUserAsync(CreateUserDto userDto)
         {
             try
             {
                 var existingUser = await _userRepository.GetByEmailAsync(userDto.Email);
                 if (existingUser != null)
                 {
-                    throw new InvalidOperationException("El correo ya está en uso.");
+                    throw new InvalidOperationException("The email is already in use.");
                 }
 
+                // Create the User entity based on the DTO
                 var user = new User
                 {
                     FirstName = userDto.FirstName,
@@ -82,11 +90,20 @@ namespace Coney.Backend.Services.Users
                 };
 
                 await _userRepository.AddAsync(user);
+
+                return new UserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    CreatedAt = user.CreatedAt
+                };
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!(ex is InvalidOperationException))
             {
-                _logger.LogError(ex, "Error al crear un nuevo usuario");
-                throw new ApplicationException("Se produjo un error al crear el usuario, inténtelo de nuevo más tarde.");
+                _logger.LogError(ex, "Error creating a new user");
+                throw new ApplicationException("An error occurred while creating the user.");
             }
         }
 
@@ -97,7 +114,7 @@ namespace Coney.Backend.Services.Users
                 var user = await _userRepository.GetByIdAsync(id);
                 if (user == null)
                 {
-                    throw new KeyNotFoundException("Usuario no encontrado.");
+                    throw new KeyNotFoundException("user not found.");
                 }
 
                 user.FirstName = updateUserDto.FirstName;
@@ -109,8 +126,8 @@ namespace Coney.Backend.Services.Users
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al actualizar el usuario con ID {id}");
-                throw new ApplicationException($"Se produjo un error al actualizar el usuario con ID {id}, inténtelo de nuevo más tarde.");
+                _logger.LogError(ex, $"Error updating user with ID {id}");
+                throw new ApplicationException($"An error occurred while updating user with ID {id}.");
             }
         }
 
@@ -123,8 +140,8 @@ namespace Coney.Backend.Services.Users
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error al eliminar el usuario con ID {id}");
-                throw new ApplicationException($"Se produjo un error al eliminar el usuario con ID {id}, inténtelo de nuevo más tarde.");
+                _logger.LogError(ex, $"Error deleting user with ID {id}");
+                throw new ApplicationException($"An error occurred while deleting the user with ID {id}.");
             }
         }
     }

@@ -10,18 +10,21 @@ namespace Coney.Backend.Data.Repositories.Users
         public UserRepository(ConeyDbContext context)
         {
             _context = context;
-        }
 
+        }
+        // returns all the information from the users table
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }
-
-        public async Task<User> GetByIdAsync(int id)
+        
+        // returns the information of a single user
+        public async Task<User?> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
+        // Save a user's information
         public async Task AddAsync(User user)
         {
             await _context.Users.AddAsync(user);
@@ -43,7 +46,7 @@ namespace Coney.Backend.Data.Repositories.Users
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<User> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
