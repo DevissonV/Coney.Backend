@@ -80,7 +80,7 @@ Coney.Backend/
 ### Ejecutar la imagen del contenedor de Docker para PostgreSQL:
 
 1. Pararse en la raíz del proyecto y ejecutar:
-   ```docker-compose-dev up -d```
+   ```docker compose -f docker-compose-dev.yml up -d```
 
 
 
