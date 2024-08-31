@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 
 namespace Coney.Backend.Filters
 {
@@ -18,28 +17,56 @@ namespace Coney.Backend.Filters
             var exception = context.Exception;
             _logger.LogError(exception, "Error no manejado.");
 
+            var response = new
+            {
+                status = false,
+                code = 500,
+                message = "Se produjo un error inesperado.",
+                data = (object?)null
+            };
+
             if (exception is InvalidOperationException)
             {
-                context.Result = new BadRequestObjectResult(new { message = exception.Message });
+                response = new
+                {
+                    status = false,
+                    code = 400,
+                    message = exception.Message,
+                    data = (object?)null
+                };
+                context.Result = new BadRequestObjectResult(response);
             }
             else if (exception is KeyNotFoundException)
             {
-                context.Result = new NotFoundObjectResult(new { message = exception.Message });
+                response = new
+                {
+                    status = false,
+                    code = 404,
+                    message = exception.Message,
+                    data = (object?)null
+                };
+                context.Result = new NotFoundObjectResult(response);
             }
             else if (exception is ApplicationException)
             {
-                // Maneja las excepciones personalizadas del servicio
-                context.Result = new BadRequestObjectResult(new { message = exception.Message });
+                response = new
+                {
+                    status = false,
+                    code = 400,
+                    message = exception.Message,
+                    data = (object?)null
+                };
+                context.Result = new BadRequestObjectResult(response);
             }
             else
             {
-                context.Result = new ObjectResult(new { message = "Se produjo un error inesperado." })
+                context.Result = new ObjectResult(response)
                 {
                     StatusCode = 500
                 };
             }
 
-            context.ExceptionHandled = true;  // Evita que la excepción se propague más allá de este punto
+            context.ExceptionHandled = true;
         }
     }
 }

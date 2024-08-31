@@ -1,7 +1,7 @@
 using Coney.Backend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Coney.Backend.Data.Repositories
+namespace Coney.Backend.Data.Repositories.Users
 {
     public class UserRepository
     {
@@ -10,30 +10,35 @@ namespace Coney.Backend.Data.Repositories
         public UserRepository(ConeyDbContext context)
         {
             _context = context;
-        }
 
+        }
+        // returns all the information from the users
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
         }
-
-        public async Task<User> GetByIdAsync(int id)
+        
+        // returns the information of a single user using the id
+        public async Task<User?> GetByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
 
+        // Save a user information
         public async Task AddAsync(User user)
         {
-            _context.Users.Add(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
 
+        // Update user information
         public async Task UpdateAsync(User user)
         {
             _context.Entry(user).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 
+        // Delete the information of a single user using the id
         public async Task DeleteAsync(int id)
         {
             var user = await _context.Users.FindAsync(id);
@@ -43,7 +48,9 @@ namespace Coney.Backend.Data.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<User> GetByEmailAsync(string email)
+
+        // returns the information of a single user using the email
+        public async Task<User?> GetByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
