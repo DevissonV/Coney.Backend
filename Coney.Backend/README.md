@@ -81,8 +81,7 @@ Coney.Backend/
 
 1. Pararse en la raíz del proyecto y ejecutar:
    ```docker compose -f docker-compose-dev.yml up -d```
-
-
+   
 
 ### Migraciones y Actualización de Base de Datos
 #### Usando Terminales Estándar (cmd, PowerShell, Visual Studio Code):
