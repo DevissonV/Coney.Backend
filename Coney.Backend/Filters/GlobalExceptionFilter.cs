@@ -22,7 +22,7 @@ namespace Coney.Backend.Filters
                 status = false,
                 code = 500,
                 message = "Se produjo un error inesperado.",
-                data = (object)null
+                data = (object?)null
             };
 
             if (exception is InvalidOperationException)
@@ -32,7 +32,7 @@ namespace Coney.Backend.Filters
                     status = false,
                     code = 400,
                     message = exception.Message,
-                    data = (object)null
+                    data = (object?)null
                 };
                 context.Result = new BadRequestObjectResult(response);
             }
@@ -43,7 +43,7 @@ namespace Coney.Backend.Filters
                     status = false,
                     code = 404,
                     message = exception.Message,
-                    data = (object)null
+                    data = (object?)null
                 };
                 context.Result = new NotFoundObjectResult(response);
             }
@@ -54,7 +54,7 @@ namespace Coney.Backend.Filters
                     status = false,
                     code = 400,
                     message = exception.Message,
-                    data = (object)null
+                    data = (object?)null
                 };
                 context.Result = new BadRequestObjectResult(response);
             }

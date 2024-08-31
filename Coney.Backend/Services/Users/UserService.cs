@@ -72,6 +72,8 @@ namespace Coney.Backend.Services.Users
         {
             try
             {
+
+                // It is verified that the email is unique in the system.
                 var existingUser = await _userRepository.GetByEmailAsync(userDto.Email);
                 if (existingUser != null)
                 {
@@ -85,8 +87,8 @@ namespace Coney.Backend.Services.Users
                     LastName = userDto.LastName,
                     Email = userDto.Email,
                     Password = BCrypt.Net.BCrypt.HashPassword(userDto.Password),
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now
                 };
 
                 await _userRepository.AddAsync(user);
@@ -107,31 +109,47 @@ namespace Coney.Backend.Services.Users
             }
         }
 
-        public async Task UpdateUserAsync(int id, UpdateUserDto updateUserDto)
+        // This method is responsible updating information 
+        // in the DB for the sent user
+        public async Task<UserDto> UpdateUserAsync(int id, UpdateUserDto updateUserDto)
         {
             try
             {
+                // Get the User entity from the repository
                 var user = await _userRepository.GetByIdAsync(id);
                 if (user == null)
                 {
-                    throw new KeyNotFoundException("user not found.");
+                    throw new KeyNotFoundException("User not found.");
                 }
 
-                user.FirstName = updateUserDto.FirstName;
-                user.LastName = updateUserDto.LastName;
-                user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
-                user.UpdatedAt = DateTime.UtcNow;
+                // Updates only the provided fields
+                user.FirstName = updateUserDto.FirstName ?? user.FirstName;
+                user.LastName = updateUserDto.LastName ?? user.LastName;
+                if (!string.IsNullOrEmpty(updateUserDto.Password))
+                {
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(updateUserDto.Password);
+                }
+                user.UpdatedAt = DateTime.Now;
 
                 await _userRepository.UpdateAsync(user);
+
+                return new UserDto
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    UpdatedAt = user.UpdatedAt
+                };
             }
-            catch (Exception ex)
+            catch (Exception ex) when (!(ex is KeyNotFoundException))
             {
                 _logger.LogError(ex, $"Error updating user with ID {id}");
                 throw new ApplicationException($"An error occurred while updating user with ID {id}.");
             }
         }
 
-
+        // This method is responsible for removing users from the entity.
         public async Task DeleteUserAsync(int id)
         {
             try

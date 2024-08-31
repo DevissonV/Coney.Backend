@@ -7,5 +7,6 @@ namespace Coney.Backend.DTOs.Users
         public required  string LastName { get; set; }
         public required  string Email { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

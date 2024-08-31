@@ -47,10 +47,10 @@ public class UserController : ControllerBase
     // PUT: api/User/updateUser/{id}
     // Updates an existing user with ID.
     [HttpPut("updateUser/{id}")]
-    public async Task<IActionResult> UpdateUser(int id, UpdateUserDto updateUserDto)
+    public async Task<ActionResult<UserDto>> UpdateUser(int id, UpdateUserDto updateUserDto)
     {
-        await _userService.UpdateUserAsync(id, updateUserDto);
-        return NoContent(); 
+        var updatedUser = await _userService.UpdateUserAsync(id, updateUserDto);
+        return Ok(new { status = true, code = 200, data = updatedUser });
     }
 
     // DELETE: api/User/deleteUser/{id}
@@ -59,6 +59,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteUser(int id)
     {
         await _userService.DeleteUserAsync(id);
-        return NoContent();
+        return Ok(new { status = true, code = 200, data = $"user {id} deleted"});
     }
 }
