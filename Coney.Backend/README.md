@@ -97,7 +97,7 @@ Para este proceso de instalación de dependencias existen dos metodos comunes:
 
 ### 2. Disponibilizar la BD: Ejecutar la imagen del contenedor de Docker para PostgreSQL:
   - Si solo se quiere crear la BD de postgreSQL para trabajar el entorno de desarrollo en la maquina local, sin dockerizar el entorno .net pararse en la raíz del proyecto y ejecutar:
-   ```docker compose -f docker-compose-devDB.yml up -d```
+   ```docker compose -f docker-compose-devBD.yml up -d```
    (hasta este punto solo se creo el contenedor con la imagen de la BD, pero se deben crear las migraciones, leer apartado "Migraciones y Actualización de Base de Datos")
 
   - Pero si se quiere dockerizar todo el ambiente, tanto backend como BD(automaticamente se generan las migraciones) ejecutar: 
