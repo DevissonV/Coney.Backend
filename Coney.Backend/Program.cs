@@ -3,22 +3,40 @@ using Coney.Backend.Data.Repositories.Users;
 using Coney.Backend.Services.Users;
 using Coney.Backend.Filters; 
 using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
-// Configuration  Kestrel When you run an ASP.NET Core application in a Docker container, 
-// If not configured correctly, the web server will only listen on localhost inside the container 
-// and you will not be able to access the application from outside.
-var port = Environment.GetEnvironmentVariable("ASPNETCORE_PORT") ?? "5293";
+
+// Load environment variables from .env file
+DotNetEnv.Env.Load();
+
+// Load configurations from appsettings.json and environment variables
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                     .AddEnvironmentVariables();
+
+// Build the connection string using environment variables
+var defaultConnection = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
+                        $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
+                        $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
+                        $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")}";
+builder.Configuration["ConnectionStrings:DefaultConnection"] = defaultConnection;
+
+
+// Set up Kestrel with the port using environment variables
+var kestrelPort = Environment.GetEnvironmentVariable("APP_EXEC_PORT") ?? "5293";
+builder.Configuration["Kestrel:Port"] = kestrelPort;
+
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(int.Parse(port));
+    options.ListenAnyIP(int.Parse(kestrelPort));
 });
 
 builder.Services.AddControllers();
 
 // Configure DbContext with PostgreSQL
 builder.Services.AddDbContext<ConeyDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // Add services to the container and create filter for error handling.
 builder.Services.AddControllers(options =>

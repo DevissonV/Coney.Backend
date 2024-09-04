@@ -96,6 +96,21 @@ Coney.Backend/
   cd Coney.Backend/Coney.Backend
   ```
 
+  - **Configurar el Archivo de Entorno**: En la raiz del proyecto, encontrarás un archivo llamado .env-example Este archivo contiene las variables de entorno necesarias para ejecutar la aplicación en desarrollo. Debes hacer una copia de este archivo y renombrarla como .env
+
+  En Unix/Linux o Git Bash:
+  ```
+  cp .env-example .env
+  ```
+  En Windows (PowerShell o CMD):
+  
+  ``` 
+  copy .env-example .env
+  ```
+
+  Tambien puedes hacer la copia manualmente a través del Explorador de Archivos en Windows.
+
+  una vez se tenga el archivo .env abrirlo con el editor de texto favorito y ajustar las variables según las necesidades del entorno local.
 
 ### 2. Restauración - instalación de Dependencias NuGet
 
@@ -112,14 +127,20 @@ dotnet restore Coney.Backend.csproj
 ### 3. Disponibilizar la BD: Ejecutar la imagen del contenedor de Docker para PostgreSQL:
   - Si solo se quiere crear la BD de postgreSQL para trabajar el entorno de desarrollo en la maquina local, sin dockerizar el entorno .net pararse en la raíz del proyecto y ejecutar:
    ```
-   docker compose -f docker-compose-devBD.yml up -d
+   docker compose -f docker-compose-devDB.yml up -d
    ```
-   (hasta este punto solo se creo el contenedor con la imagen de la BD, pero se deben crear las migraciones, leer apartado "Migraciones y Actualización de Base de Datos")
+   (hasta este punto solo se creo el contenedor con la imagen de la BD, pero se deben crear las migraciones, leer apartado "Migraciones y Actualización de Base de Datos") tambien tener presente que para configurar la conexión a la base de datos del aplicativo debe hacerse desde el archivo .env ubicado en la raiz del proyecto
 
   - Pero si se quiere dockerizar todo el ambiente, tanto backend como BD(automaticamente se generan las migraciones) ejecutar: 
    ```
    docker compose -f docker-compose-dev.yml up --build
    ```
+   **IMPORTANTE**: si va levantarse o compilarse la aplicación mediante docker, tener presente que en la varible de entorno del archivo .env debe estar asi:
+
+   ```
+   DB_HOST=postgres-db
+   ``` 
+  Debido a cada contenedor es independiente, por lo que si se deja como ```DB_HOST=localhost```no funcionaria, (esto solo aplica si se va a compilar el aplicativo con docker, no aplica en el escenario que solo se va a dockerizar la BD)
 
 ### 4. Migraciones y Actualización de Base de Datos
 #### Usando Terminales Estándar (cmd, PowerShell, Visual Studio Code):
@@ -179,10 +200,24 @@ Para probar las apis en postman, se debe descargar el archivo llamado collection
 
 # Despliegue para desarrollo
 
-Para ambientes de desarrollo ya se encuentra dockerizado el proyecto, se puede realizar un despliegue ejecutando:
+Para ambientes de desarrollo ya se encuentra dockerizado el proyecto, se puede realizar un despliegue siguiendo los pasos:
+
+1. Clonar el Repositorio: Para clonar el proyecto, abre una terminal y ejecuta el siguiente comando:
+  ```
+  git clone https://github.com/DevissonV/Coney.Backend.git
+  ```
+2. Navegar a la Carpeta del Proyecto: Una vez clonado el proyecto, navega a la carpeta donde se encuentra el código fuente del backend:
+  ```
+  cd Coney.Backend/Coney.Backend
+  ```
+
+3. Configurar variables de entorno del archivo .env ubicado en la raiz del proyecto, si no existe sacar una copia del .env-example
+
+4. Una vez ubicados en la raiz del proyecto y con las variables de entorno configuradas, ejecutar:
 ```
 docker compose -f docker-compose-dev.yml up -d
 ```
+
 # Despliegue para producción
 
 *Aún en construcción*

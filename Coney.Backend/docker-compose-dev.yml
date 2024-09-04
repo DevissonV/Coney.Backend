@@ -1,14 +1,15 @@
+# IMPORTANT: No environment variables are saved because this file is for development and testing only.
 version: '3.8'
 
 services:
   postgres-db:
     image: postgres:16
     environment:
-      POSTGRES_USER: coneyuser 
-      POSTGRES_PASSWORD: coneypassword
-      POSTGRES_DB: coneydb
+      POSTGRES_USER: ${DB_USER} 
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -23,11 +24,9 @@ services:
       context: .
       dockerfile: .docker/cs.dev.dockerfile
     ports:
-      - "5293:5293"
+      - ${APP_EXEC_PORT}:${APP_EXEC_PORT}
     environment:
-      ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: "Host=postgres-db;Database=coneydb;Username=coneyuser;Password=coneypassword"
-      ASPNETCORE_PORT: 5293
+      ASPNETCORE_ENVIRONMENT: ${ENVIRONMENT}
     depends_on:
       postgres-db:
         condition: service_healthy       
