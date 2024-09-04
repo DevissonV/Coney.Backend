@@ -1,0 +1,17 @@
+# It is created to raise only the DB container and develop with the back on the premises
+version: '3.8'
+
+services:
+  postgres-db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: coneyuser 
+      POSTGRES_PASSWORD: coneypassword
+      POSTGRES_DB: coneydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

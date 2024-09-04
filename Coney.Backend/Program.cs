@@ -5,6 +5,14 @@ using Coney.Backend.Filters;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+// Configuration  Kestrel When you run an ASP.NET Core application in a Docker container, 
+// If not configured correctly, the web server will only listen on localhost inside the container 
+// and you will not be able to access the application from outside.
+var port = Environment.GetEnvironmentVariable("ASPNETCORE_PORT") ?? "5293";
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(int.Parse(port));
+});
 
 builder.Services.AddControllers();
 
