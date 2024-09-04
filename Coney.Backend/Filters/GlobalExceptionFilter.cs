@@ -15,13 +15,13 @@ namespace Coney.Backend.Filters
         public void OnException(ExceptionContext context)
         {
             var exception = context.Exception;
-            _logger.LogError(exception, "Error no manejado.");
+            _logger.LogError(exception, "Unhandled error..");
 
             var response = new
             {
                 status = false,
                 code = 500,
-                message = "Se produjo un error inesperado.",
+                message = "Se produjo un error inesperadoAn unexpected error occurred.",
                 data = (object?)null
             };
 

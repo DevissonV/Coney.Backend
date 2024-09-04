@@ -93,31 +93,58 @@ Para este proceso de instalación de dependencias existen dos metodos comunes:
 
   - **Manual**: Si estás utilizando una terminal, puedes restaurar manualmente las dependencias ejecutando el siguiente comando en la raíz del proyecto:
 
-``` dotnet restore Coney.Backend.csproj ```
+``` 
+dotnet restore Coney.Backend.csproj 
+```
 
 ### 2. Disponibilizar la BD: Ejecutar la imagen del contenedor de Docker para PostgreSQL:
   - Si solo se quiere crear la BD de postgreSQL para trabajar el entorno de desarrollo en la maquina local, sin dockerizar el entorno .net pararse en la raíz del proyecto y ejecutar:
-   ```docker compose -f docker-compose-devBD.yml up -d```
+   ```
+   docker compose -f docker-compose-devBD.yml up -d
+   ```
    (hasta este punto solo se creo el contenedor con la imagen de la BD, pero se deben crear las migraciones, leer apartado "Migraciones y Actualización de Base de Datos")
 
   - Pero si se quiere dockerizar todo el ambiente, tanto backend como BD(automaticamente se generan las migraciones) ejecutar: 
-   ```docker compose -f docker-compose-dev.yml up -d```
+   ```
+   docker compose -f docker-compose-dev.yml up --build
+   ```
 
 ### 3. Migraciones y Actualización de Base de Datos
 #### Usando Terminales Estándar (cmd, PowerShell, Visual Studio Code):
 
-1. Verificar tener instalado dotnet ef ejecutar en consola: ``` dotnet ef ``` Si no lo tienes instalado, ejecuta: ```dotnet tool install --global dotnet-ef ```
+1. Verificar tener instalado dotnet ef ejecutar en consola: 
+``` 
+dotnet ef 
+``` 
+Si no lo tienes instalado, ejecuta: 
+```
+dotnet tool install --global dotnet-ef 
+```
 
-2. Después de estar seguros de que se tiene instalado el dotnet, Crear una nueva migración ejecutando: ```dotnet ef migrations add NombreMigration``` Esto creará una migración con el nombre: "NombreMigration" (reemplázalo por el nombre que desees). Incluirá todas las tablas y columnas definidas en tus entidades (User, etc.).
+2. Después de estar seguros de que se tiene instalado el dotnet, Crear una nueva migración ejecutando: 
+```
+dotnet ef migrations add NombreMigration
+``` 
+Esto creará una migración con el nombre: "NombreMigration" (reemplázalo por el nombre que desees). Incluirá todas las tablas y columnas definidas en tus entidades (User, etc.).
 
-3. Aplicar la migración a la base de datos ejecutando: ```dotnet ef database update```  Esto ejecutará la migración y creará la base de datos y las tablas correspondientes en PostgreSQL.
+3. Aplicar la migración a la base de datos ejecutando: 
+```
+dotnet ef database update
+```  
+Esto ejecutará la migración y creará la base de datos y las tablas correspondientes en PostgreSQL.
 
 
 #### Usando Visual Studio:
 
 1. Abre la Consola del Administrador de Paquetes en Visual Studio (tools-> NuGet Package Manager -> Package Manager Console).
-2. Ya estando en la consola, crear una nueva migración: ```add-migration InitialDb``` 
-3. Aplicar la migración a la base de datos: ```update-database```
+2. Ya estando en la consola del administrador de paquetes, crear una nueva migración:
+```
+add-migration InitialDb
+``` 
+3. Aplicar la migración a la base de datos: 
+```
+update-database
+```
 
 
 ### 4. Proceso de compilación
@@ -141,7 +168,9 @@ Para probar las apis en postman, se debe descargar el archivo llamado collection
 # Despliegue para desarrollo
 
 Para ambientes de desarrollo ya se encuentra dockerizado el proyecto, se puede realizar un despliegue ejecutando:
-   ```docker compose -f docker-compose-dev.yml up -d```
+```
+docker compose -f docker-compose-dev.yml up -d
+```
 # Despliegue para producción
 
 *Aún en construcción*
