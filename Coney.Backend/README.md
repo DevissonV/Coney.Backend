@@ -85,7 +85,19 @@ Coney.Backend/
 
 ## Instalación para desarrollo
 
-### 1.Restauración - instalación de Dependencias NuGet
+### 1. Clonar y Navegar el Proyecto
+
+  - **Clonar el Repositorio**: Para clonar el proyecto en tu máquina local, abre una terminal y ejecuta el siguiente comando:
+  ```
+  git clone https://github.com/DevissonV/Coney.Backend.git
+  ```
+  - **Navegar a la Carpeta del Proyecto**: Una vez clonado el proyecto, navega a la carpeta donde se encuentra el código fuente del backend:
+  ```
+  cd Coney.Backend/Coney.Backend
+  ```
+
+
+### 2. Restauración - instalación de Dependencias NuGet
 
 Para este proceso de instalación de dependencias existen dos metodos comunes: 
 
@@ -97,7 +109,7 @@ Para este proceso de instalación de dependencias existen dos metodos comunes:
 dotnet restore Coney.Backend.csproj 
 ```
 
-### 2. Disponibilizar la BD: Ejecutar la imagen del contenedor de Docker para PostgreSQL:
+### 3. Disponibilizar la BD: Ejecutar la imagen del contenedor de Docker para PostgreSQL:
   - Si solo se quiere crear la BD de postgreSQL para trabajar el entorno de desarrollo en la maquina local, sin dockerizar el entorno .net pararse en la raíz del proyecto y ejecutar:
    ```
    docker compose -f docker-compose-devBD.yml up -d
@@ -109,7 +121,7 @@ dotnet restore Coney.Backend.csproj
    docker compose -f docker-compose-dev.yml up --build
    ```
 
-### 3. Migraciones y Actualización de Base de Datos
+### 4. Migraciones y Actualización de Base de Datos
 #### Usando Terminales Estándar (cmd, PowerShell, Visual Studio Code):
 
 1. Verificar tener instalado dotnet ef ejecutar en consola: 
@@ -147,7 +159,7 @@ update-database
 ```
 
 
-### 4. Proceso de compilación
+### 5. Proceso de compilación
 
 #### Para compilar usando Terminales Estándar (cmd, PowerShell, Visual Studio Code):
 
@@ -159,7 +171,7 @@ dotnet run --project Coney.Backend.csproj
 ```
 #### Para compilar usando Visual Studio:
 
-1. Oprimir la tecla F5.
+1. Abrir el proyecto en visual studio, Oprimir la tecla F5.
 
 # Pruebas en POSTMAN
 Para probar las apis en postman, se debe descargar el archivo llamado collection.json e importarlo en el postman, de esta manera ya se tendra configurado el entorno de prueba
