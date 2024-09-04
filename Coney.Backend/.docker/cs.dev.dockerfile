@@ -13,14 +13,14 @@ ENV PATH="$PATH:/root/.dotnet/tools"
 # Copy the rest of the application code
 COPY . ./
 
+# Permissions to the entry point file for migrations and running the application
+RUN chmod +x /app/.docker/entrypoint.sh
+
 # restore dependencies
 RUN dotnet restore Coney.Backend.csproj
 RUN dotnet build Coney.Backend.generated.sln
 
 # Expose the port on which the application will run
 EXPOSE 5293
-
-# Permissions to the entry point file for migrations and running the application
-RUN chmod +x /app/.docker/entrypoint.sh
 
 ENTRYPOINT ["/app/.docker/entrypoint.sh"]
