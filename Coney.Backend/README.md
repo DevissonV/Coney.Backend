@@ -186,7 +186,7 @@ update-database
 
 1. Ejecutar en la terminal:
 ``` 
-dotnet build Coney.Backend.generated.sln
+dotnet build Coney.Backend.sln
 dotnet run --project Coney.Backend.csproj
 
 ```
