@@ -18,7 +18,7 @@ RUN chmod +x /app/.docker/entrypoint.sh
 
 # restore dependencies
 RUN dotnet restore Coney.Backend.csproj
-RUN dotnet build Coney.Backend.generated.sln
+RUN dotnet build Coney.Backend.sln
 
 # Expose the port on which the application will run
 EXPOSE 5293
