@@ -221,3 +221,69 @@ docker compose -f docker-compose-dev.yml up -d
 # Despliegue para producción
 
 *Aún en construcción*
+
+# Ejecución de SonarQube
+
+El archivo `run-sonarqube.sh` levanta una instancia local de SonarQube usando Docker.
+
+## En sistemas Unix (Linux o macOS)
+
+1. Dar permisos de ejecución al archivo:
+   ```bash
+   chmod +x run-sonarqube.sh
+   ```
+2. Ejecutar el script:
+   ```bash
+   ./run-sonarqube.sh
+   ```
+
+Esto iniciará el contenedor de SonarQube en `http://localhost:9000`.
+
+---
+
+# Ejecución del análisis del proyecto
+
+El archivo `scan.sh` realiza el análisis del código y envía los resultados al servidor de SonarQube.
+
+1. Dar permisos de ejecución al archivo:
+   ```bash
+   chmod +x scan.sh
+   ```
+2. Ejecutar el análisis:
+   ```bash
+   ./scan.sh
+   ```
+
+El script cargará automáticamente las variables del archivo `.env` (asegurarse de contar con las variables), se compilará el proyecto y enviará los resultados a SonarQube.
+
+---
+
+# Ejemplo de mensaje para Copilot para usar el promt de limpieza del sonar
+
+Ejemplo de prompt que se puede usar en GitHub Copilot para generar o mejorar el script:
+```
+#file:SonarFixAssistant.md 
+{{regla}}: S3803  
+
+{{mensaje_sonar}}: "Move 'UserController' into a named namespace."  
+
+{{codigo_afectado}}:  
+
+using Coney.Backend.DTOs.Users;
+using Coney.Backend.Services.Users;
+using Microsoft.AspNetCore.Mvc;
+
+[Route("api/[controller]")]
+[ApiController]
+public class UserController : ControllerBase
+{
+    private readonly UserService _userService;
+
+    public UserController(UserService userService)
+    {
+        _userService = userService;
+    }
+
+
+{{archivo_linea}}: Controllers\Users\UserController.cs
+```

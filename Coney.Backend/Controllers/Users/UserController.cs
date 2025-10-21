@@ -2,6 +2,8 @@ using Coney.Backend.DTOs.Users;
 using Coney.Backend.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 
+namespace Coney.Backend.Controllers.Users;
+
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
