@@ -21,7 +21,12 @@ public class UserController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
     {
         var users = await _userService.GetAllUsersAsync();
-        return Ok(new { status = true, code = 200, data = users });
+        return Ok(
+            new { 
+                status = true, 
+                code = 200, 
+                data = users 
+            });
     }
 
     // GET: api/User/getUserById/{id}
